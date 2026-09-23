@@ -96,6 +96,10 @@
     .modal-box{width:min(540px,100%);background:#fffdf9;border-radius:12px;padding:18px;border:1px solid #d7cfc4}
     .modal-head{display:flex;align-items:center;justify-content:space-between;gap:10px;margin-bottom:14px}
     .empty{font-size:12px;color:var(--muted);padding:10px 0}
+    .source-badge{display:inline-flex;align-items:center;gap:5px;border-radius:999px;padding:4px 8px;font-size:9px;font-weight:700;background:#f0ebe3;color:#5f564b;border:1px solid #ded5c8;white-space:nowrap}
+    .source-badge::before{content:'';width:6px;height:6px;border-radius:999px;background:var(--gold);flex:0 0 auto}
+    .mobile-nav{display:none}
+    .more-sheet{display:none}
     @media(max-width:900px){
       .grid4{grid-template-columns:repeat(2,minmax(0,1fr))}
       .properties{grid-template-columns:repeat(2,minmax(0,1fr))}
@@ -113,7 +117,7 @@
       .nav{display:flex;overflow-x:auto;gap:6px;padding-bottom:2px;-webkit-overflow-scrolling:touch;scrollbar-width:none}
       .nav::-webkit-scrollbar{display:none}
       .nav button{white-space:nowrap;min-height:44px;padding:10px 12px;font-size:12px;flex:0 0 auto}
-      .content{padding:14px 12px max(22px,env(safe-area-inset-bottom))}
+      .content{padding:14px 12px calc(92px + env(safe-area-inset-bottom))}
       .top{flex-direction:column;gap:12px;margin-bottom:14px}
       h1{font-size:25px;line-height:1.05}
       .subtitle{font-size:12px;line-height:1.45}
@@ -167,6 +171,19 @@
       #propostas tbody td:nth-child(5)::before{content:'Status'}
       #propostas tbody td:nth-child(6)::before{content:'Ação'}
       #propostas tbody td .btn{min-height:38px;padding:8px 10px}
+      .mobile-nav{display:grid;grid-template-columns:repeat(5,1fr);position:fixed;left:10px;right:10px;bottom:calc(10px + env(safe-area-inset-bottom));z-index:50;background:rgba(41,39,33,.97);border:1px solid rgba(255,255,255,.1);border-radius:16px;padding:6px;box-shadow:0 12px 30px rgba(0,0,0,.2);backdrop-filter:blur(12px)}
+      .mobile-nav button{border:0;background:transparent;color:#cfc8bd;border-radius:11px;min-height:52px;padding:6px 4px;font-size:10px;font-weight:700;display:flex;flex-direction:column;align-items:center;justify-content:center;gap:4px;cursor:pointer}
+      .mobile-nav button::before{font-size:18px;line-height:1}
+      .mobile-nav button[data-mobile-view="dashboard"]::before{content:'⌂'}
+      .mobile-nav button[data-mobile-view="crm"]::before{content:'◎'}
+      .mobile-nav button[data-mobile-view="imoveis"]::before{content:'▦'}
+      .mobile-nav button[data-mobile-view="agenda"]::before{content:'□'}
+      .mobile-nav button[data-mobile-view="more"]::before{content:'•••'}
+      .mobile-nav button.active{background:#f4efe6;color:#28251f}
+      .more-sheet{position:fixed;left:12px;right:12px;bottom:calc(82px + env(safe-area-inset-bottom));z-index:49;background:#fffdf9;border:1px solid var(--line);border-radius:16px;padding:10px;box-shadow:0 18px 40px rgba(0,0,0,.18)}
+      .more-sheet.open{display:grid;gap:7px}
+      .more-sheet button{border:1px solid var(--line);background:#fff;border-radius:10px;min-height:46px;padding:10px 12px;text-align:left;font-size:13px;font-weight:700;color:var(--ink)}
+      .lead-source-row{display:flex;align-items:center;justify-content:space-between;gap:8px;margin-top:9px;padding-top:8px;border-top:1px solid var(--line)}
     }
     @media(max-width:380px){
       .grid4{grid-template-columns:1fr}
@@ -236,6 +253,19 @@
   </main>
 </div>
 
+<div class="more-sheet" id="more-sheet" aria-hidden="true">
+  <button type="button" data-more-view="propostas">Propostas</button>
+  <button type="button" data-more-view="relatorios">Relatórios</button>
+</div>
+
+<nav class="mobile-nav" id="mobile-nav" aria-label="Navegação principal">
+  <button type="button" class="active" data-mobile-view="dashboard"><span>Início</span></button>
+  <button type="button" data-mobile-view="crm"><span>Leads</span></button>
+  <button type="button" data-mobile-view="imoveis"><span>Imóveis</span></button>
+  <button type="button" data-mobile-view="agenda"><span>Agenda</span></button>
+  <button type="button" data-mobile-view="more"><span>Mais</span></button>
+</nav>
+
 <script>
 const money=n=>new Intl.NumberFormat('pt-BR',{style:'currency',currency:'BRL',maximumFractionDigits:0}).format(Number(n)||0);
 const stages=['Novo','Contato','Qualificado','Imóveis enviados','Visita','Proposta','Documentação','Fechado'];
@@ -268,10 +298,26 @@ const tempLabel=t=>t==='hot'?'Quente':t==='warm'?'Morno':'Frio';
 function switchView(v){
   qsa('.view').forEach(x=>x.classList.add('hidden'));qs('#'+v).classList.remove('hidden');
   qsa('.nav button').forEach(b=>b.classList.toggle('active',b.dataset.view===v));
+  qsa('#mobile-nav button').forEach(b=>b.classList.toggle('active',b.dataset.mobileView===v || (b.dataset.mobileView==='more' && (v==='propostas'||v==='relatorios'))));
+  const moreSheet=qs('#more-sheet'); if(moreSheet){moreSheet.classList.remove('open');moreSheet.setAttribute('aria-hidden','true');}
   const meta={dashboard:['Central comercial','Visão geral','Acompanhe leads, imóveis, visitas e negociações.'],crm:['Relacionamento','CRM & Leads','Gerencie o funil comercial e prioridades de atendimento.'],imoveis:['Portfólio','Imóveis','Consulte disponibilidade, valores e perfil dos empreendimentos.'],agenda:['Agenda comercial','Agenda','Organize visitas e compromissos da equipe.'],propostas:['Negociação','Propostas','Acompanhe valores, condições e status das propostas.'],relatorios:['Inteligência comercial','Relatórios','Analise performance dos corretores e origem dos leads.']};
   qs('#eyebrow').textContent=meta[v][0];qs('#page-title').textContent=meta[v][1];qs('#page-subtitle').textContent=meta[v][2];renderAll();
 }
 qsa('.nav button').forEach(b=>b.addEventListener('click',()=>switchView(b.dataset.view)));
+qsa('#mobile-nav button').forEach(b=>b.addEventListener('click',()=>{
+  const v=b.dataset.mobileView;
+  if(v==='more'){
+    const sheet=qs('#more-sheet');
+    const open=!sheet.classList.contains('open');
+    sheet.classList.toggle('open',open);
+    sheet.setAttribute('aria-hidden',open?'false':'true');
+    qsa('#mobile-nav button').forEach(x=>x.classList.remove('active'));
+    b.classList.add('active');
+    return;
+  }
+  switchView(v);
+}));
+qsa('[data-more-view]').forEach(b=>b.addEventListener('click',()=>switchView(b.dataset.moreView)));
 qs('#open-agenda').addEventListener('click',()=>switchView('agenda'));
 function renderDashboard(){
   const active=leads.filter(l=>l.stage!=='Fechado').length,openV=proposals.filter(p=>p.status!=='Aceita').reduce((s,p)=>s+p.offer,0),accepted=proposals.filter(p=>p.status==='Aceita').reduce((s,p)=>s+p.offer,0);
@@ -285,7 +331,7 @@ function renderDashboard(){
 function moveLead(id,d){const l=leads.find(x=>x.id===id),i=stages.indexOf(l.stage);l.stage=stages[Math.max(0,Math.min(stages.length-1,i+d))];renderAll()}
 function renderCRM(){
   const q=(qs('#lead-search').value||'').toLowerCase(),f=qs('#lead-filter').value;
-  qs('#kanban').innerHTML=stages.map(stage=>{const arr=leads.filter(l=>l.stage===stage).filter(l=>f==='all'||l.temp===f).filter(l=>(l.name+' '+l.region+' '+l.agent).toLowerCase().includes(q));return '<div class="col"><div class="col-head"><strong>'+stage+'</strong><span class="count">'+arr.length+'</span></div>'+arr.map(l=>'<div class="lead" data-lead="'+l.id+'"><div style="display:flex;justify-content:space-between;gap:6px"><div class="name">'+l.name+'</div><span class="tag '+l.temp+'">'+tempLabel(l.temp)+'</span></div><div class="meta">'+l.region+'<br>'+money(l.budget)+' · '+l.agent+'</div><div class="lead-actions"><button class="arrow prev" data-id="'+l.id+'" type="button">←</button><button class="arrow next" data-id="'+l.id+'" type="button">→</button></div></div>').join('')+'</div>'}).join('');
+  qs('#kanban').innerHTML=stages.map(stage=>{const arr=leads.filter(l=>l.stage===stage).filter(l=>f==='all'||l.temp===f).filter(l=>(l.name+' '+l.region+' '+l.agent).toLowerCase().includes(q));return '<div class="col"><div class="col-head"><strong>'+stage+'</strong><span class="count">'+arr.length+'</span></div>'+arr.map(l=>'<div class="lead" data-lead="'+l.id+'"><div style="display:flex;justify-content:space-between;gap:6px"><div class="name">'+l.name+'</div><span class="tag '+l.temp+'">'+tempLabel(l.temp)+'</span></div><div class="meta">'+l.region+'<br>'+money(l.budget)+' · '+l.agent+'</div><div class="lead-source-row"><span class="tiny">Origem</span><span class="source-badge">'+l.source+'</span></div><div class="lead-actions"><button class="arrow prev" data-id="'+l.id+'" type="button">←</button><button class="arrow next" data-id="'+l.id+'" type="button">→</button></div></div>').join('')+'</div>'}).join('');
   qsa('[data-lead]').forEach(c=>c.addEventListener('click',e=>{if(e.target.closest('button'))return;showLead(Number(c.dataset.lead))}));
   qsa('.prev').forEach(b=>b.addEventListener('click',()=>moveLead(Number(b.dataset.id),-1)));qsa('.next').forEach(b=>b.addEventListener('click',()=>moveLead(Number(b.dataset.id),1)));
 }
