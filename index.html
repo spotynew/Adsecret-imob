@@ -1,0 +1,227 @@
+<!doctype html>
+<html lang="pt-BR">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width,initial-scale=1" />
+  <title>ADSECRET IMOB CRM</title>
+  <meta name="description" content="CRM imobiliário ADSECRET IMOB" />
+  <style>
+    :root{
+      --ink:#211f1b;--muted:#77716a;--line:#e5e0d8;--bg:#f5f2ec;--paper:#fffdf9;--gold:#a7895c;--dark:#2d2a25;
+    }
+    *{box-sizing:border-box}
+    body{margin:0;font-family:Arial,Helvetica,sans-serif;background:var(--bg);color:var(--ink)}
+    button,input,select{font:inherit}
+    .shell{min-height:100vh;display:grid;grid-template-columns:230px minmax(0,1fr)}
+    aside{background:#292721;color:#f5f1e8;padding:24px 14px;position:sticky;top:0;height:100vh}
+    .brand{padding:0 10px 22px;border-bottom:1px solid rgba(255,255,255,.14);margin-bottom:14px}
+    .brand small{display:block;font-size:10px;letter-spacing:.28em;color:#b9b2a6;margin-bottom:6px}
+    .brand strong{font-family:Georgia,'Times New Roman',serif;font-size:24px;letter-spacing:.08em;font-weight:500}
+    .brand p{font-size:11px;color:#a9a399;margin:7px 0 0}
+    .nav{display:grid;gap:5px}
+    .nav button{appearance:none;border:0;background:transparent;color:#d6d0c6;text-align:left;padding:11px 12px;border-radius:8px;font-size:13px;cursor:pointer}
+    .nav button.active{background:#f4efe6;color:#28251f;font-weight:700}
+    .content{min-width:0;padding:24px}
+    .top{display:flex;align-items:flex-start;justify-content:space-between;gap:14px;margin-bottom:18px}
+    .eyebrow{font-size:10px;letter-spacing:.2em;text-transform:uppercase;color:var(--gold);font-weight:700}
+    h1,h2,h3,h4{font-family:Georgia,'Times New Roman',serif;font-weight:500}
+    h1{font-size:28px;margin:4px 0 3px}
+    h2{font-size:18px;margin:0}
+    .subtitle{font-size:13px;color:var(--muted)}
+    .actions{display:flex;gap:8px;flex-wrap:wrap}
+    .btn{border:1px solid #d7d0c5;background:#fffdf9;color:#2f2b25;border-radius:8px;padding:9px 12px;font-size:12px;font-weight:700;cursor:pointer;min-height:40px}
+    .btn.primary{background:var(--dark);color:#fff;border-color:var(--dark)}
+    .grid4{display:grid;grid-template-columns:repeat(4,minmax(0,1fr));gap:10px}
+    .card{background:var(--paper);border:1px solid var(--line);border-radius:12px}
+    .metric{padding:15px}
+    .metric span{font-size:11px;color:var(--muted)}
+    .metric strong{display:block;font-family:Georgia,'Times New Roman',serif;font-size:24px;font-weight:500;margin-top:6px}
+    .section{padding:17px}
+    .section-title{display:flex;align-items:center;justify-content:space-between;gap:10px;margin-bottom:13px}
+    .tiny{font-size:11px;color:var(--muted)}
+    .two{display:grid;grid-template-columns:1.25fr .75fr;gap:12px;margin-top:12px}
+    .three{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:10px}
+    .bar-row{margin:12px 0}
+    .bar-head{display:flex;justify-content:space-between;gap:8px;font-size:12px;margin-bottom:6px}
+    .bar{height:5px;background:#ece6dd;border-radius:50px;overflow:hidden}
+    .bar i{display:block;height:100%;background:var(--gold);border-radius:50px}
+    .lead-mini{border-top:1px solid var(--line);padding:11px 0;cursor:pointer}
+    .lead-mini:first-child{border-top:0;padding-top:0}
+    .tag{display:inline-flex;align-items:center;border:1px solid #ddd5ca;background:#f8f4ed;border-radius:999px;padding:4px 8px;font-size:10px;font-weight:700;color:#655d52}
+    .tag.hot{background:#f6e9e4;color:#8e3525;border-color:#efd2c8}
+    .tag.warm{background:#f4eddc;color:#826523;border-color:#e6d8b6}
+    .tag.cool{background:#e9edf0;color:#465862;border-color:#d6dfe4}
+    .visit{padding:12px;border:1px solid var(--line);border-radius:9px;background:#fff}
+    .view.hidden{display:none}
+    .toolbar{display:flex;gap:8px;flex-wrap:wrap;padding:12px;margin-bottom:12px}
+    input,select{min-height:42px;border:1px solid #dad3c9;background:#fffdf9;border-radius:8px;padding:9px 10px;font-size:13px;color:#2d2923;outline:none}
+    input:focus,select:focus{border-color:var(--gold);box-shadow:0 0 0 2px rgba(167,137,92,.13)}
+    .search{max-width:330px;width:100%}.filter{max-width:190px}
+    .kanban{display:flex;gap:9px;overflow:auto;padding-bottom:5px}
+    .col{min-width:220px;width:220px}
+    .col-head{display:flex;justify-content:space-between;align-items:center;margin-bottom:8px}
+    .col-head strong{font-size:11px;text-transform:uppercase;letter-spacing:.08em}
+    .count{font-size:10px;background:#ded7cd;border-radius:50px;padding:3px 7px}
+    .lead{background:#fffdf9;border:1px solid var(--line);border-radius:10px;padding:11px;margin-bottom:8px;cursor:pointer}
+    .lead:hover{border-color:#bba98e}
+    .lead .name{font-size:13px;font-weight:700;margin-bottom:7px}
+    .lead .meta{font-size:11px;color:var(--muted);line-height:1.5}
+    .lead-actions{display:flex;gap:5px;margin-top:9px}
+    .arrow{border:1px solid #ded6cb;background:#fff;border-radius:7px;width:34px;height:31px;cursor:pointer}
+    .detail{margin-top:12px;padding:16px}
+    .detail-grid{display:grid;grid-template-columns:repeat(4,minmax(0,1fr));gap:12px;margin-top:14px}
+    .detail-grid small{display:block;color:var(--muted);font-size:10px;margin-bottom:4px}
+    .match-grid{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:8px;margin-top:10px}
+    .match{border:1px solid var(--line);border-radius:9px;padding:11px;background:#fff}
+    .score{font-family:Georgia,'Times New Roman',serif;font-size:23px;color:var(--gold)}
+    .properties{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:10px}
+    .property{overflow:hidden}
+    .property-visual{height:150px;background:linear-gradient(145deg,#b6b0a6,#ded8cf);position:relative}
+    .property-visual:after{content:'';position:absolute;left:18%;right:18%;bottom:0;height:86%;background:linear-gradient(90deg,#8f8a82 0 13%,#b4aea5 13% 28%,#89847c 28% 40%,#aaa49b 40% 62%,#858078 62% 76%,#aea89f 76%);clip-path:polygon(7% 100%,7% 30%,20% 30%,20% 13%,80% 13%,80% 30%,93% 30%,93% 100%);opacity:.7}
+    .property-body{padding:13px}
+    .property-body .code{font-size:9px;color:var(--gold);letter-spacing:.13em}
+    .property-body h4{font-size:17px;margin:4px 0 9px}
+    .price{font-size:15px;font-weight:700}
+    .specs{font-size:11px;color:var(--muted);margin-top:7px}
+    table{width:100%;border-collapse:collapse}
+    th,td{text-align:left;border-bottom:1px solid var(--line);padding:10px 8px;font-size:12px;vertical-align:top}
+    th{font-size:9px;text-transform:uppercase;letter-spacing:.1em;color:var(--muted)}
+    form label{display:block;font-size:11px;color:var(--muted)}
+    form label input,form label select{width:100%;margin-top:5px}
+    .form-grid{display:grid;grid-template-columns:1fr 1fr;gap:9px}
+    .modal{position:absolute;inset:0;background:rgba(31,29,25,.55);z-index:20;padding:34px 15px;display:flex;justify-content:center;align-items:flex-start}
+    .modal-box{width:min(540px,100%);background:#fffdf9;border-radius:12px;padding:18px;border:1px solid #d7cfc4}
+    .modal-head{display:flex;align-items:center;justify-content:space-between;gap:10px;margin-bottom:14px}
+    .empty{font-size:12px;color:var(--muted);padding:10px 0}
+    @media(max-width:900px){.grid4{grid-template-columns:repeat(2,minmax(0,1fr))}.properties{grid-template-columns:repeat(2,minmax(0,1fr))}.two{grid-template-columns:1fr}.detail-grid{grid-template-columns:repeat(2,minmax(0,1fr))}}
+    @media(max-width:700px){.shell{grid-template-columns:1fr}aside{position:static;height:auto;padding:12px}.brand{display:none}.nav{display:flex;overflow:auto;gap:5px}.nav button{white-space:nowrap}.content{padding:14px}.top{flex-direction:column}.grid4,.properties,.match-grid{grid-template-columns:1fr}.form-grid{grid-template-columns:1fr}}
+  </style>
+</head>
+<body>
+<div class="shell">
+  <aside>
+    <div class="brand"><small>GESTÃO IMOBILIÁRIA</small><strong>ADSECRET IMOB</strong><p>CRM comercial premium</p></div>
+    <nav class="nav">
+      <button class="active" data-view="dashboard">Visão geral</button>
+      <button data-view="crm">CRM & Leads</button>
+      <button data-view="imoveis">Imóveis</button>
+      <button data-view="agenda">Agenda</button>
+      <button data-view="propostas">Propostas</button>
+      <button data-view="relatorios">Relatórios</button>
+    </nav>
+  </aside>
+  <main class="content" style="position:relative">
+    <div class="top">
+      <div><div class="eyebrow" id="eyebrow">Central comercial</div><h1 id="page-title">Visão geral</h1><div class="subtitle" id="page-subtitle">Acompanhe leads, imóveis, visitas e negociações.</div></div>
+      <div class="actions"><button class="btn" id="new-property">+ Imóvel</button><button class="btn primary" id="new-lead">+ Novo lead</button></div>
+    </div>
+
+    <section id="dashboard" class="view">
+      <div class="grid4" id="metrics"></div>
+      <div class="two">
+        <div class="card section"><div class="section-title"><h2>Jornada comercial</h2><span class="tiny">Funil ativo</span></div><div id="funnel"></div></div>
+        <div class="card section"><div class="section-title"><h2>Prioridades de hoje</h2><span class="tag hot">Alta intenção</span></div><div id="priority"></div></div>
+      </div>
+      <div class="card section" style="margin-top:12px"><div class="section-title"><h2>Próximas visitas</h2><button class="btn" id="open-agenda">Abrir agenda</button></div><div class="three" id="visits-mini"></div></div>
+    </section>
+
+    <section id="crm" class="view hidden">
+      <div class="card toolbar"><input class="search" id="lead-search" placeholder="Buscar cliente, bairro ou corretor"><select class="filter" id="lead-filter"><option value="all">Todas as temperaturas</option><option value="hot">Quentes</option><option value="warm">Mornos</option><option value="cool">Frios</option></select></div>
+      <div class="kanban" id="kanban"></div>
+      <div class="card detail hidden" id="lead-detail"></div>
+    </section>
+
+    <section id="imoveis" class="view hidden">
+      <div class="card toolbar"><input class="search" id="property-search" placeholder="Buscar empreendimento, bairro ou código"><select class="filter" id="property-filter"><option value="all">Todos os status</option><option>Disponível</option><option>Reservado</option><option>Vendido</option></select></div>
+      <div class="properties" id="properties"></div>
+    </section>
+
+    <section id="agenda" class="view hidden">
+      <div class="two">
+        <form id="visit-form" class="card section"><div class="section-title"><h2>Agendar visita</h2></div><div style="display:grid;gap:10px"><label>Cliente<input id="visit-client" required></label><label>Imóvel<select id="visit-property" required></select></label><div class="form-grid"><label>Data<input id="visit-date" type="date" required></label><label>Horário<input id="visit-time" type="time" required></label></div><button class="btn primary" type="submit">Confirmar visita</button><div class="tiny" id="visit-msg"></div></div></form>
+        <div class="card section" style="overflow:auto"><div class="section-title"><h2>Compromissos</h2></div><table><thead><tr><th>Data</th><th>Cliente</th><th>Imóvel</th><th>Status</th></tr></thead><tbody id="agenda-table"></tbody></table></div>
+      </div>
+    </section>
+
+    <section id="propostas" class="view hidden">
+      <div class="grid4" id="proposal-metrics"></div>
+      <div class="card section" style="margin-top:12px;overflow:auto"><div class="section-title"><h2>Negociações</h2></div><table><thead><tr><th>Cliente</th><th>Imóvel</th><th>Pedido</th><th>Proposta</th><th>Status</th><th></th></tr></thead><tbody id="proposal-table"></tbody></table></div>
+    </section>
+
+    <section id="relatorios" class="view hidden">
+      <div class="two"><div class="card section"><div class="section-title"><h2>Performance por corretor</h2></div><div id="agent-report"></div></div><div class="card section"><div class="section-title"><h2>Origem dos leads</h2></div><div id="source-report"></div></div></div>
+    </section>
+
+    <div id="modal-root"></div>
+  </main>
+</div>
+
+<script>
+const money=n=>new Intl.NumberFormat('pt-BR',{style:'currency',currency:'BRL',maximumFractionDigits:0}).format(Number(n)||0);
+const stages=['Novo','Contato','Qualificado','Imóveis enviados','Visita','Proposta','Documentação','Fechado'];
+let leads=[
+{id:1,name:'Mariana Costa',phone:'(11) 98841-2031',budget:780000,region:'Tatuapé',type:'Apartamento',beds:3,spaces:2,agent:'Ricardo',stage:'Visita',temp:'hot',source:'Meta Ads'},
+{id:2,name:'Felipe Nogueira',phone:'(11) 97722-1190',budget:520000,region:'Carrão',type:'Apartamento',beds:2,spaces:1,agent:'Carla',stage:'Qualificado',temp:'warm',source:'Google Ads'},
+{id:3,name:'Juliana Martins',phone:'(11) 99631-7741',budget:1250000,region:'Anália Franco',type:'Apartamento',beds:3,spaces:2,agent:'Ricardo',stage:'Proposta',temp:'hot',source:'Instagram'},
+{id:4,name:'André Ribeiro',phone:'(11) 98180-4420',budget:690000,region:'Mooca',type:'Apartamento',beds:3,spaces:1,agent:'Diego',stage:'Contato',temp:'cool',source:'Meta Ads'},
+{id:5,name:'Patrícia Lima',phone:'(11) 99244-0192',budget:920000,region:'Tatuapé',type:'Cobertura',beds:3,spaces:2,agent:'Carla',stage:'Imóveis enviados',temp:'warm',source:'Indicação'},
+{id:6,name:'Lucas Moreira',phone:'(11) 98930-5251',budget:450000,region:'Penha',type:'Apartamento',beds:2,spaces:1,agent:'Diego',stage:'Novo',temp:'cool',source:'Portal'}
+];
+let properties=[
+{id:101,code:'AD-1023',title:'Residencial Tatuapé',region:'Tatuapé',type:'Apartamento',price:745000,beds:3,spaces:2,area:82,status:'Disponível'},
+{id:102,code:'AD-1188',title:'Residence Anália Franco',region:'Anália Franco',type:'Apartamento',price:1190000,beds:3,spaces:2,area:118,status:'Disponível'},
+{id:103,code:'AD-0931',title:'Living Carrão',region:'Carrão',type:'Apartamento',price:498000,beds:2,spaces:1,area:61,status:'Disponível'},
+{id:104,code:'AD-1240',title:'Mooca Residence',region:'Mooca',type:'Apartamento',price:665000,beds:3,spaces:1,area:76,status:'Reservado'},
+{id:105,code:'AD-0201',title:'Tatuapé Collection',region:'Tatuapé',type:'Cobertura',price:890000,beds:3,spaces:2,area:132,status:'Disponível'}
+];
+let visits=[
+{id:1,date:'2026-09-24',time:'10:30',client:'Mariana Costa',property:'Residencial Tatuapé',status:'Confirmada'},
+{id:2,date:'2026-09-24',time:'15:00',client:'Felipe Nogueira',property:'Living Carrão',status:'Confirmada'},
+{id:3,date:'2026-09-25',time:'11:00',client:'Patrícia Lima',property:'Tatuapé Collection',status:'Pendente'}
+];
+let proposals=[
+{id:1,client:'Juliana Martins',property:'Residence Anália Franco',asking:1190000,offer:1130000,status:'Em análise'},
+{id:2,client:'Mariana Costa',property:'Residencial Tatuapé',asking:745000,offer:720000,status:'Negociação'}
+];
+const qs=s=>document.querySelector(s), qsa=s=>[...document.querySelectorAll(s)];
+const tempLabel=t=>t==='hot'?'Quente':t==='warm'?'Morno':'Frio';
+function switchView(v){
+  qsa('.view').forEach(x=>x.classList.add('hidden'));qs('#'+v).classList.remove('hidden');
+  qsa('.nav button').forEach(b=>b.classList.toggle('active',b.dataset.view===v));
+  const meta={dashboard:['Central comercial','Visão geral','Acompanhe leads, imóveis, visitas e negociações.'],crm:['Relacionamento','CRM & Leads','Gerencie o funil comercial e prioridades de atendimento.'],imoveis:['Portfólio','Imóveis','Consulte disponibilidade, valores e perfil dos empreendimentos.'],agenda:['Agenda comercial','Agenda','Organize visitas e compromissos da equipe.'],propostas:['Negociação','Propostas','Acompanhe valores, condições e status das propostas.'],relatorios:['Inteligência comercial','Relatórios','Analise performance dos corretores e origem dos leads.']};
+  qs('#eyebrow').textContent=meta[v][0];qs('#page-title').textContent=meta[v][1];qs('#page-subtitle').textContent=meta[v][2];renderAll();
+}
+qsa('.nav button').forEach(b=>b.addEventListener('click',()=>switchView(b.dataset.view)));
+qs('#open-agenda').addEventListener('click',()=>switchView('agenda'));
+function renderDashboard(){
+  const active=leads.filter(l=>l.stage!=='Fechado').length,openV=proposals.filter(p=>p.status!=='Aceita').reduce((s,p)=>s+p.offer,0),accepted=proposals.filter(p=>p.status==='Aceita').reduce((s,p)=>s+p.offer,0);
+  qs('#metrics').innerHTML=[['Leads ativos',active],['Visitas agendadas',visits.length],['VGV em negociação',money(openV)],['VGV aceito',money(accepted)]].map(x=>'<div class="card metric"><span>'+x[0]+'</span><strong>'+x[1]+'</strong></div>').join('');
+  const max=Math.max(...stages.map(s=>leads.filter(l=>l.stage===s).length),1);
+  qs('#funnel').innerHTML=stages.map(s=>{const n=leads.filter(l=>l.stage===s).length;return '<div class="bar-row"><div class="bar-head"><span>'+s+'</span><b>'+n+'</b></div><div class="bar"><i style="width:'+(n/max*100)+'%"></i></div></div>'}).join('');
+  qs('#priority').innerHTML=leads.filter(l=>l.temp==='hot').map(l=>'<div class="lead-mini" data-priority="'+l.id+'"><div style="display:flex;justify-content:space-between;gap:8px"><strong>'+l.name+'</strong><span class="tag hot">Quente</span></div><div class="tiny" style="margin-top:4px">'+l.region+' · '+money(l.budget)+' · '+l.agent+'</div></div>').join('');
+  qsa('[data-priority]').forEach(x=>x.addEventListener('click',()=>{switchView('crm');showLead(Number(x.dataset.priority))}));
+  qs('#visits-mini').innerHTML=visits.slice(0,3).map(v=>'<div class="visit"><span class="tiny">'+v.date+' · '+v.time+'</span><b style="display:block;margin-top:5px">'+v.client+'</b><p style="font-size:11px;color:var(--muted);margin:4px 0 0">'+v.property+'</p></div>').join('');
+}
+function moveLead(id,d){const l=leads.find(x=>x.id===id),i=stages.indexOf(l.stage);l.stage=stages[Math.max(0,Math.min(stages.length-1,i+d))];renderAll()}
+function renderCRM(){
+  const q=(qs('#lead-search').value||'').toLowerCase(),f=qs('#lead-filter').value;
+  qs('#kanban').innerHTML=stages.map(stage=>{const arr=leads.filter(l=>l.stage===stage).filter(l=>f==='all'||l.temp===f).filter(l=>(l.name+' '+l.region+' '+l.agent).toLowerCase().includes(q));return '<div class="col"><div class="col-head"><strong>'+stage+'</strong><span class="count">'+arr.length+'</span></div>'+arr.map(l=>'<div class="lead" data-lead="'+l.id+'"><div style="display:flex;justify-content:space-between;gap:6px"><div class="name">'+l.name+'</div><span class="tag '+l.temp+'">'+tempLabel(l.temp)+'</span></div><div class="meta">'+l.region+'<br>'+money(l.budget)+' · '+l.agent+'</div><div class="lead-actions"><button class="arrow prev" data-id="'+l.id+'" type="button">←</button><button class="arrow next" data-id="'+l.id+'" type="button">→</button></div></div>').join('')+'</div>'}).join('');
+  qsa('[data-lead]').forEach(c=>c.addEventListener('click',e=>{if(e.target.closest('button'))return;showLead(Number(c.dataset.lead))}));
+  qsa('.prev').forEach(b=>b.addEventListener('click',()=>moveLead(Number(b.dataset.id),-1)));qsa('.next').forEach(b=>b.addEventListener('click',()=>moveLead(Number(b.dataset.id),1)));
+}
+function score(l,p){let s=0;s+=Math.max(0,35-Math.abs(p.price-l.budget)/Math.max(l.budget,1)*35);if(l.region===p.region)s+=30;if(l.type===p.type)s+=15;if(p.beds>=l.beds)s+=10;if(p.spaces>=l.spaces)s+=10;return Math.round(Math.min(100,s))}
+function showLead(id){const l=leads.find(x=>x.id===id);if(!l)return;const m=properties.filter(p=>p.status==='Disponível').map(p=>({...p,score:score(l,p)})).sort((a,b)=>b.score-a.score).slice(0,3),box=qs('#lead-detail');box.classList.remove('hidden');box.innerHTML='<div style="display:flex;justify-content:space-between;gap:10px;flex-wrap:wrap"><div><div class="eyebrow">Perfil do cliente</div><h2 style="font-size:22px;margin:4px 0">'+l.name+'</h2><div class="tiny">'+l.phone+' · Corretor '+l.agent+'</div></div><span class="tag '+l.temp+'">'+tempLabel(l.temp)+'</span></div><div class="detail-grid"><div><small>Orçamento</small><b>'+money(l.budget)+'</b></div><div><small>Região</small><b>'+l.region+'</b></div><div><small>Perfil</small><b>'+l.beds+' dorm. · '+l.spaces+' vagas</b></div><div><small>Origem</small><b>'+l.source+'</b></div></div><div class="section-title" style="margin-top:19px"><h2>Imóveis recomendados</h2><span class="tiny">Match automático</span></div><div class="match-grid">'+m.map(p=>'<div class="match"><div class="score">'+p.score+'%</div><b style="font-size:12px">'+p.title+'</b><div class="tiny" style="margin-top:4px">'+money(p.price)+' · '+p.area+' m²</div></div>').join('')+'</div>'}
+qs('#lead-search').addEventListener('input',renderCRM);qs('#lead-filter').addEventListener('change',renderCRM);
+function renderProperties(){const q=(qs('#property-search').value||'').toLowerCase(),f=qs('#property-filter').value,arr=properties.filter(p=>f==='all'||p.status===f).filter(p=>(p.title+' '+p.region+' '+p.code).toLowerCase().includes(q));qs('#properties').innerHTML=arr.map(p=>'<article class="card property"><div class="property-visual"></div><div class="property-body"><div style="display:flex;justify-content:space-between;gap:8px"><span class="code">'+p.code+'</span><span class="tag">'+p.status+'</span></div><h4>'+p.title+'</h4><div class="price">'+money(p.price)+'</div><div class="specs">'+p.region+' · '+p.area+' m² · '+p.beds+' dorm. · '+p.spaces+' vagas</div></div></article>').join('')||'<div class="empty">Nenhum imóvel encontrado.</div>'}
+qs('#property-search').addEventListener('input',renderProperties);qs('#property-filter').addEventListener('change',renderProperties);
+function renderAgenda(){qs('#visit-property').innerHTML='<option value="">Selecione um imóvel</option>'+properties.filter(p=>p.status==='Disponível').map(p=>'<option>'+p.title+'</option>').join('');qs('#agenda-table').innerHTML=visits.map(v=>'<tr><td>'+v.date+'<br><span class="tiny">'+v.time+'</span></td><td>'+v.client+'</td><td>'+v.property+'</td><td><span class="tag">'+v.status+'</span></td></tr>').join('')}
+qs('#visit-form').addEventListener('submit',e=>{e.preventDefault();const client=qs('#visit-client').value.trim(),property=qs('#visit-property').value,date=qs('#visit-date').value,time=qs('#visit-time').value;if(!client||!property||!date||!time)return;visits.push({id:Date.now(),client,property,date,time,status:'Confirmada'});e.target.reset();qs('#visit-msg').textContent='Visita incluída na agenda.';renderAll()});
+function renderProposals(){const accepted=proposals.filter(p=>p.status==='Aceita'),open=proposals.filter(p=>p.status!=='Aceita');qs('#proposal-metrics').innerHTML=[['Propostas abertas',open.length],['Em negociação',proposals.filter(p=>p.status==='Negociação').length],['Aceitas',accepted.length],['VGV aceito',money(accepted.reduce((s,p)=>s+p.offer,0))]].map(x=>'<div class="card metric"><span>'+x[0]+'</span><strong>'+x[1]+'</strong></div>').join('');qs('#proposal-table').innerHTML=proposals.map(p=>'<tr><td>'+p.client+'</td><td>'+p.property+'</td><td>'+money(p.asking)+'</td><td><b>'+money(p.offer)+'</b></td><td><span class="tag">'+p.status+'</span></td><td>'+(p.status==='Aceita'?'—':'<button class="btn accept" data-id="'+p.id+'">Aceitar</button>')+'</td></tr>').join('');qsa('.accept').forEach(b=>b.addEventListener('click',()=>{proposals.find(p=>p.id===Number(b.dataset.id)).status='Aceita';renderAll()}))}
+function renderReports(){const agents=[...new Set(leads.map(l=>l.agent))];qs('#agent-report').innerHTML=agents.map(a=>{const arr=leads.filter(l=>l.agent===a),adv=arr.filter(l=>['Visita','Proposta','Documentação','Fechado'].includes(l.stage)).length,r=Math.round(adv/arr.length*100);return '<div class="bar-row"><div class="bar-head"><span>'+a+'</span><b>'+r+'% avanço</b></div><div class="bar"><i style="width:'+r+'%"></i></div><div class="tiny" style="margin-top:5px">'+arr.length+' leads em carteira</div></div>'}).join('');const src=[...new Set(leads.map(l=>l.source))],max=Math.max(...src.map(s=>leads.filter(l=>l.source===s).length),1);qs('#source-report').innerHTML=src.map(s=>{const n=leads.filter(l=>l.source===s).length;return '<div class="bar-row"><div class="bar-head"><span>'+s+'</span><b>'+n+'</b></div><div class="bar"><i style="width:'+n/max*100+'%"></i></div></div>'}).join('')}
+function modal(html){qs('#modal-root').innerHTML='<div class="modal"><div class="modal-box">'+html+'</div></div>';qsa('.close-modal').forEach(b=>b.addEventListener('click',()=>qs('#modal-root').innerHTML=''))}
+qs('#new-lead').addEventListener('click',()=>{modal('<form id="lead-form"><div class="modal-head"><h2>Novo lead</h2><button class="btn close-modal" type="button">Fechar</button></div><div class="form-grid"><label style="grid-column:1/-1">Nome<input name="name" required></label><label>Telefone<input name="phone" required></label><label>Orçamento<input name="budget" type="number" min="0" required></label><label>Região<input name="region" required></label><label>Tipo<select name="type"><option>Apartamento</option><option>Casa</option><option>Cobertura</option></select></label><label>Corretor<select name="agent"><option>Ricardo</option><option>Carla</option><option>Diego</option></select></label></div><button class="btn primary" style="width:100%;margin-top:13px" type="submit">Cadastrar lead</button></form>');qs('#lead-form').addEventListener('submit',e=>{e.preventDefault();const f=new FormData(e.target);leads.push({id:Date.now(),name:f.get('name'),phone:f.get('phone'),budget:Number(f.get('budget')),region:f.get('region'),type:f.get('type'),beds:2,spaces:1,agent:f.get('agent'),stage:'Novo',temp:'warm',source:'Manual'});qs('#modal-root').innerHTML='';switchView('crm')})});
+qs('#new-property').addEventListener('click',()=>{modal('<form id="property-form"><div class="modal-head"><h2>Novo imóvel</h2><button class="btn close-modal" type="button">Fechar</button></div><div class="form-grid"><label style="grid-column:1/-1">Nome do empreendimento<input name="title" required></label><label>Código<input name="code" required></label><label>Preço<input name="price" type="number" min="0" required></label><label>Bairro<input name="region" required></label><label>Área m²<input name="area" type="number" min="0" required></label></div><button class="btn primary" style="width:100%;margin-top:13px" type="submit">Cadastrar imóvel</button></form>');qs('#property-form').addEventListener('submit',e=>{e.preventDefault();const f=new FormData(e.target);properties.push({id:Date.now(),title:f.get('title'),code:f.get('code'),price:Number(f.get('price')),region:f.get('region'),type:'Apartamento',area:Number(f.get('area')),beds:2,spaces:1,status:'Disponível'});qs('#modal-root').innerHTML='';switchView('imoveis')})});
+function renderAll(){renderDashboard();renderCRM();renderProperties();renderAgenda();renderProposals();renderReports()}renderAll();
+</script>
+</body>
+</html>
