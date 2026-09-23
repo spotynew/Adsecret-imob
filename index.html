@@ -2,7 +2,7 @@
 <html lang="pt-BR">
 <head>
   <meta charset="utf-8" />
-  <meta name="viewport" content="width=device-width,initial-scale=1" />
+  <meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover" />
   <title>ADSECRET IMOB CRM</title>
   <meta name="description" content="CRM imobiliário ADSECRET IMOB" />
   <style>
@@ -10,8 +10,11 @@
       --ink:#211f1b;--muted:#77716a;--line:#e5e0d8;--bg:#f5f2ec;--paper:#fffdf9;--gold:#a7895c;--dark:#2d2a25;
     }
     *{box-sizing:border-box}
-    body{margin:0;font-family:Arial,Helvetica,sans-serif;background:var(--bg);color:var(--ink)}
+    html{-webkit-text-size-adjust:100%;text-size-adjust:100%}
+    body{margin:0;font-family:Arial,Helvetica,sans-serif;background:var(--bg);color:var(--ink);overflow-x:hidden}
     button,input,select{font:inherit}
+    button{touch-action:manipulation}
+    img,svg{max-width:100%;height:auto}
     .shell{min-height:100vh;display:grid;grid-template-columns:230px minmax(0,1fr)}
     aside{background:#292721;color:#f5f1e8;padding:24px 14px;position:sticky;top:0;height:100vh}
     .brand{padding:0 10px 22px;border-bottom:1px solid rgba(255,255,255,.14);margin-bottom:14px}
@@ -57,7 +60,7 @@
     input,select{min-height:42px;border:1px solid #dad3c9;background:#fffdf9;border-radius:8px;padding:9px 10px;font-size:13px;color:#2d2923;outline:none}
     input:focus,select:focus{border-color:var(--gold);box-shadow:0 0 0 2px rgba(167,137,92,.13)}
     .search{max-width:330px;width:100%}.filter{max-width:190px}
-    .kanban{display:flex;gap:9px;overflow:auto;padding-bottom:5px}
+    .kanban{display:flex;gap:9px;overflow:auto;padding-bottom:8px;-webkit-overflow-scrolling:touch;scrollbar-width:thin}
     .col{min-width:220px;width:220px}
     .col-head{display:flex;justify-content:space-between;align-items:center;margin-bottom:8px}
     .col-head strong{font-size:11px;text-transform:uppercase;letter-spacing:.08em}
@@ -89,12 +92,89 @@
     form label{display:block;font-size:11px;color:var(--muted)}
     form label input,form label select{width:100%;margin-top:5px}
     .form-grid{display:grid;grid-template-columns:1fr 1fr;gap:9px}
-    .modal{position:absolute;inset:0;background:rgba(31,29,25,.55);z-index:20;padding:34px 15px;display:flex;justify-content:center;align-items:flex-start}
+    .modal{position:fixed;inset:0;background:rgba(31,29,25,.55);z-index:20;padding:34px 15px;display:flex;justify-content:center;align-items:flex-start;overflow-y:auto;-webkit-overflow-scrolling:touch}
     .modal-box{width:min(540px,100%);background:#fffdf9;border-radius:12px;padding:18px;border:1px solid #d7cfc4}
     .modal-head{display:flex;align-items:center;justify-content:space-between;gap:10px;margin-bottom:14px}
     .empty{font-size:12px;color:var(--muted);padding:10px 0}
-    @media(max-width:900px){.grid4{grid-template-columns:repeat(2,minmax(0,1fr))}.properties{grid-template-columns:repeat(2,minmax(0,1fr))}.two{grid-template-columns:1fr}.detail-grid{grid-template-columns:repeat(2,minmax(0,1fr))}}
-    @media(max-width:700px){.shell{grid-template-columns:1fr}aside{position:static;height:auto;padding:12px}.brand{display:none}.nav{display:flex;overflow:auto;gap:5px}.nav button{white-space:nowrap}.content{padding:14px}.top{flex-direction:column}.grid4,.properties,.match-grid{grid-template-columns:1fr}.form-grid{grid-template-columns:1fr}}
+    @media(max-width:900px){
+      .grid4{grid-template-columns:repeat(2,minmax(0,1fr))}
+      .properties{grid-template-columns:repeat(2,minmax(0,1fr))}
+      .two{grid-template-columns:1fr}
+      .detail-grid{grid-template-columns:repeat(2,minmax(0,1fr))}
+      .content{padding:18px}
+    }
+    @media(max-width:700px){
+      body{background:#f5f2ec}
+      .shell{grid-template-columns:1fr;min-height:100vh}
+      aside{position:sticky;top:0;z-index:30;height:auto;padding:10px 12px 8px;border-bottom:1px solid rgba(255,255,255,.12)}
+      .brand{display:flex;align-items:center;justify-content:space-between;gap:10px;padding:0 2px 9px;margin:0 0 7px;border-bottom:1px solid rgba(255,255,255,.12)}
+      .brand small,.brand p{display:none}
+      .brand strong{font-size:17px;letter-spacing:.06em;white-space:nowrap}
+      .nav{display:flex;overflow-x:auto;gap:6px;padding-bottom:2px;-webkit-overflow-scrolling:touch;scrollbar-width:none}
+      .nav::-webkit-scrollbar{display:none}
+      .nav button{white-space:nowrap;min-height:44px;padding:10px 12px;font-size:12px;flex:0 0 auto}
+      .content{padding:14px 12px max(22px,env(safe-area-inset-bottom))}
+      .top{flex-direction:column;gap:12px;margin-bottom:14px}
+      h1{font-size:25px;line-height:1.05}
+      .subtitle{font-size:12px;line-height:1.45}
+      .actions{width:100%;display:grid;grid-template-columns:1fr 1fr;gap:8px}
+      .actions .btn{width:100%;min-height:46px}
+      .btn{min-height:44px;padding:10px 12px}
+      input,select{min-height:46px;font-size:16px;width:100%}
+      .toolbar{display:grid;grid-template-columns:1fr;padding:10px}
+      .search,.filter{max-width:none;width:100%}
+      .grid4{grid-template-columns:repeat(2,minmax(0,1fr));gap:8px}
+      .metric{padding:12px;min-width:0}
+      .metric strong{font-size:20px;line-height:1.15;overflow-wrap:anywhere}
+      .metric span{font-size:10px}
+      .two,.three,.properties,.match-grid,.form-grid{grid-template-columns:1fr}
+      .section{padding:14px}
+      .section-title{align-items:flex-start;gap:8px}
+      .section-title h2{font-size:17px}
+      .three{gap:8px}
+      .visit{min-height:82px}
+      .kanban{scroll-snap-type:x mandatory;margin:0 -12px;padding:0 12px 12px;gap:10px}
+      .col{min-width:calc(100vw - 42px);width:calc(100vw - 42px);scroll-snap-align:start}
+      .lead{padding:13px}
+      .lead .name{font-size:14px}
+      .lead .meta{font-size:12px}
+      .arrow{width:44px;height:40px}
+      .detail{padding:14px}
+      .detail-grid{grid-template-columns:1fr 1fr;gap:10px}
+      .match{padding:12px}
+      .property-visual{height:190px}
+      .property-body{padding:14px}
+      .property-body h4{font-size:19px}
+      .price{font-size:17px}
+      .specs{font-size:12px;line-height:1.5}
+      .modal{padding:18px 10px max(18px,env(safe-area-inset-bottom));align-items:flex-start}
+      .modal-box{width:100%;padding:15px;border-radius:12px}
+      .modal-head{position:sticky;top:-15px;background:#fffdf9;padding:4px 0 10px;z-index:1}
+      table{min-width:0}
+      #agenda thead,#propostas thead{display:none}
+      #agenda table,#agenda tbody,#propostas table,#propostas tbody{display:block;width:100%}
+      #agenda tbody tr,#propostas tbody tr{display:grid;width:100%;gap:7px;padding:12px 0;border-bottom:1px solid var(--line)}
+      #agenda tbody td,#propostas tbody td{display:flex;justify-content:space-between;align-items:flex-start;gap:14px;border:0;padding:0;font-size:12px;text-align:right}
+      #agenda tbody td::before,#propostas tbody td::before{font-size:10px;text-transform:uppercase;letter-spacing:.07em;color:var(--muted);font-weight:700;text-align:left}
+      #agenda tbody td:nth-child(1)::before{content:'Data'}
+      #agenda tbody td:nth-child(2)::before{content:'Cliente'}
+      #agenda tbody td:nth-child(3)::before{content:'Imóvel'}
+      #agenda tbody td:nth-child(4)::before{content:'Status'}
+      #propostas tbody td:nth-child(1)::before{content:'Cliente'}
+      #propostas tbody td:nth-child(2)::before{content:'Imóvel'}
+      #propostas tbody td:nth-child(3)::before{content:'Pedido'}
+      #propostas tbody td:nth-child(4)::before{content:'Proposta'}
+      #propostas tbody td:nth-child(5)::before{content:'Status'}
+      #propostas tbody td:nth-child(6)::before{content:'Ação'}
+      #propostas tbody td .btn{min-height:38px;padding:8px 10px}
+    }
+    @media(max-width:380px){
+      .grid4{grid-template-columns:1fr}
+      .actions{grid-template-columns:1fr}
+      .detail-grid{grid-template-columns:1fr}
+      .content{padding-left:10px;padding-right:10px}
+      .col{min-width:calc(100vw - 34px);width:calc(100vw - 34px)}
+    }
   </style>
 </head>
 <body>
